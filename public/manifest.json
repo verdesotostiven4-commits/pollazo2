@@ -1,29 +1,23 @@
 {
   "name": "La Casa del Pollazo - El Mirador",
-  "short_name": "La Casa del Pollazo",
+  "short_name": "Pollazo",
   "description": "Pollos frescos y delivery en Puerto Ayora, Galápagos",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#ffffff",
+  "background_color": "#f97316",
   "theme_color": "#f97316",
   "icons": [
     {
-      "src": "/Picsart_26-03-14_04-02-01-579.png",
+      "src": "https://blogger.googleusercontent.com/img/a/AVvXsEiiiTIrX8REkR3O1r1RIKwmS91HUQBIV6ZLZAcSB46rRdgNgS_DcnqL3m5PKO3uJQnp1VXH8wHZzt8KTQbqlbjjbUkHiXi3-sUyXrVH_VLHN-IUkarRcjrIUBXM_P7C8qu7SpbU_XFqyRTT1qQ6eTa6KanjhxV7050kwVPqsFROIsc3NC_HSF2vgxEeKUI",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://blogger.googleusercontent.com/img/a/AVvXsEiiiTIrX8REkR3O1r1RIKwmS91HUQBIV6ZLZAcSB46rRdgNgS_DcnqL3m5PKO3uJQnp1VXH8wHZzt8KTQbqlbjjbUkHiXi3-sUyXrVH_VLHN-IUkarRcjrIUBXM_P7C8qu7SpbU_XFqyRTT1qQ6eTa6KanjhxV7050kwVPqsFROIsc3NC_HSF2vgxEeKUI",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/Picsart_26-03-14_04-02-01-579.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/Picsart_26-03-14_04-02-01-579.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]
