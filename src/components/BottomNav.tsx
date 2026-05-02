@@ -1,4 +1,4 @@
-import { Home, Grid, ShoppingCart, Info } from 'lucide-react';
+import { Chrome as Home, Grid2x2 as Grid, ShoppingCart, Info } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 type Screen = 'home' | 'catalog' | 'cart' | 'info';
