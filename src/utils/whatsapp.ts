@@ -2,10 +2,7 @@ import type { Product } from '../types';
 
 export const WHATSAPP = '+593989795628';
 
-interface CartItem {
-  product: Product;
-  qty: number;
-}
+interface CartItem { product: Product; qty: number; }
 
 export function buildWhatsAppUrl(items: CartItem[]): string {
   const lines = items.map(({ product, qty }) =>

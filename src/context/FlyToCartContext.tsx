@@ -3,10 +3,7 @@ import type { ReactNode } from 'react';
 
 interface FlyParticle { id: number; x: number; y: number; image: string; }
 
-const FlyToCartContext = createContext<{
-  particles: FlyParticle[];
-  triggerFly: (x: number, y: number, image: string) => void;
-} | null>(null);
+const FlyToCartContext = createContext<{ particles: FlyParticle[]; triggerFly: (x: number, y: number, image: string) => void; } | null>(null);
 
 export function FlyToCartProvider({ children }: { children: ReactNode }) {
   const [particles, setParticles] = useState<FlyParticle[]>([]);

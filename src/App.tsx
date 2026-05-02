@@ -24,95 +24,42 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-const LANDING_DISMISSED_KEY = 'pollazo_landing_dismissed';
+const LANDING_KEY = 'pollazo_landing_dismissed';
 
 function isStandalone(): boolean {
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
-    ('standalone' in window.navigator &&
-      (window.navigator as unknown as { standalone: boolean }).standalone === true)
+    ('standalone' in window.navigator && (window.navigator as unknown as { standalone: boolean }).standalone === true)
   );
 }
 
-function AppShell({
-  initialCategory,
-  onClearCategory,
-  canInstall,
-  onInstall,
-}: {
-  initialCategory: Category | null;
-  onClearCategory: () => void;
-  canInstall: boolean;
-  onInstall: () => Promise<void>;
-}) {
+function AppShell({ canInstall, onInstall }: { canInstall: boolean; onInstall: () => Promise<void> }) {
   const [screen, setScreen] = useState<Screen>('home');
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<Category | 'Todos'>(
-    initialCategory ?? 'Todos'
-  );
+  const [activeCategory, setActiveCategory] = useState<Category | 'Todos'>('Todos');
   const { items, clearCart, totalCount } = useCart();
   const mainRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (initialCategory) {
-      setScreen('catalog');
-      onClearCategory();
-    }
-  }, []);
-
   const { toasts, dismiss } = useBehavioralToasts(totalCount, screen);
 
-  const handleNavigate = useCallback((s: Screen) => {
-    setScreen(s);
-    if (mainRef.current) mainRef.current.scrollTop = 0;
-  }, []);
-
-  const handleNavigateToCategory = useCallback((cat: Category) => {
-    setActiveCategory(cat);
-    setScreen('catalog');
-    if (mainRef.current) mainRef.current.scrollTop = 0;
-  }, []);
-
-  const handleCheckout = () => {
-    if (items.length === 0) return;
-    setShowConfirmation(true);
-  };
+  const handleNavigate = useCallback((s: Screen) => { setScreen(s); if (mainRef.current) mainRef.current.scrollTop = 0; }, []);
+  const handleNavigateToCategory = useCallback((cat: Category) => { setActiveCategory(cat); setScreen('catalog'); if (mainRef.current) mainRef.current.scrollTop = 0; }, []);
 
   const handleWhatsApp = () => {
     supabase.rpc('increment_metric', { metric_id: 'total_orders' }).then(() => {});
     window.open(buildWhatsAppUrl(items), '_blank');
-    clearCart();
-    setShowConfirmation(false);
-    setScreen('home');
+    clearCart(); setShowConfirmation(false); setScreen('home');
   };
 
   return (
-    <div
-      className="flex flex-col bg-gray-50"
-      style={{ minHeight: '100dvh', maxHeight: '100dvh', fontFamily: 'Inter, sans-serif' }}
-    >
+    <div className="flex flex-col bg-gray-50" style={{ minHeight: '100dvh', maxHeight: '100dvh' }}>
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-      <AppHeader screen={screen} onNavigate={handleNavigate} scrolled={false} />
-
-      <main
-        ref={mainRef}
-        className="flex-1 overflow-y-auto pb-20"
-        style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}
-      >
-        {screen === 'home' && (
-          <HomeScreen onNavigate={handleNavigate} onNavigateToCategory={handleNavigateToCategory} />
-        )}
-        {screen === 'catalog' && (
-          <CatalogScreen initialCategory={activeCategory} onCategoryChange={setActiveCategory} />
-        )}
-        {screen === 'cart' && (
-          <CartScreen onCheckout={handleCheckout} onNavigate={handleNavigate} />
-        )}
-        {screen === 'info' && (
-          <InfoScreen onInstall={onInstall} canInstall={canInstall} />
-        )}
+      <AppHeader onNavigate={handleNavigate} />
+      <main ref={mainRef} className="flex-1 overflow-y-auto pb-20" style={{ WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
+        {screen === 'home' && <HomeScreen onNavigate={handleNavigate} onNavigateToCategory={handleNavigateToCategory} />}
+        {screen === 'catalog' && <CatalogScreen initialCategory={activeCategory} onCategoryChange={setActiveCategory} />}
+        {screen === 'cart' && <CartScreen onCheckout={() => { if (items.length > 0) setShowConfirmation(true); }} onNavigate={handleNavigate} />}
+        {screen === 'info' && <InfoScreen onInstall={onInstall} canInstall={canInstall} />}
       </main>
-
       <BottomNav current={screen} onNavigate={handleNavigate} />
       <FlyParticleLayer />
       <OrderConfirmation visible={showConfirmation} onWhatsApp={handleWhatsApp} />
@@ -121,20 +68,13 @@ function AppShell({
 }
 
 export default function App() {
-  const [landingDone, setLandingDone] = useState(() => {
-    return isStandalone() || !!sessionStorage.getItem(LANDING_DISMISSED_KEY);
-  });
+  const [landingDone, setLandingDone] = useState(() => isStandalone() || !!sessionStorage.getItem(LANDING_KEY));
   const [splashDone, setSplashDone] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [canInstall, setCanInstall] = useState(false);
-  const [pendingCategory] = useState<Category | null>(null);
 
   useEffect(() => {
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setCanInstall(true);
-    };
+    const handler = (e: Event) => { e.preventDefault(); setDeferredPrompt(e as BeforeInstallPromptEvent); setCanInstall(true); };
     window.addEventListener('beforeinstallprompt', handler);
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
@@ -143,35 +83,18 @@ export default function App() {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
-    setCanInstall(false);
+    setDeferredPrompt(null); setCanInstall(false);
   };
 
-  const handleContinueWeb = () => {
-    sessionStorage.setItem(LANDING_DISMISSED_KEY, '1');
-    setLandingDone(true);
-  };
+  const handleContinueWeb = () => { sessionStorage.setItem(LANDING_KEY, '1'); setLandingDone(true); };
 
-  if (!landingDone) {
-    return (
-      <LandingPage
-        onInstall={handleInstall}
-        canInstall={canInstall}
-        onContinueWeb={handleContinueWeb}
-      />
-    );
-  }
+  if (!landingDone) return <LandingPage onInstall={handleInstall} canInstall={canInstall} onContinueWeb={handleContinueWeb} />;
 
   return (
     <CartProvider>
       <FlyToCartProvider>
         {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
-        <AppShell
-          initialCategory={pendingCategory}
-          onClearCategory={() => {}}
-          canInstall={canInstall}
-          onInstall={handleInstall}
-        />
+        <AppShell canInstall={canInstall} onInstall={handleInstall} />
       </FlyToCartProvider>
     </CartProvider>
   );

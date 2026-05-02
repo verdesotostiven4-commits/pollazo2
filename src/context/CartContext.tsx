@@ -14,19 +14,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD': {
       const existing = state.items.find(i => i.product.id === action.product.id);
-      if (existing) {
-        return { items: state.items.map(i => i.product.id === action.product.id ? { ...i, qty: i.qty + 1 } : i) };
-      }
+      if (existing) return { items: state.items.map(i => i.product.id === action.product.id ? { ...i, qty: i.qty + 1 } : i) };
       return { items: [...state.items, { product: action.product, qty: 1 }] };
     }
-    case 'REMOVE':
-      return { items: state.items.filter(i => i.product.id !== action.id) };
-    case 'UPDATE_QTY':
-      return { items: state.items.map(i => i.product.id === action.id ? { ...i, qty: action.qty } : i).filter(i => i.qty > 0) };
-    case 'CLEAR':
-      return { items: [] };
-    default:
-      return state;
+    case 'REMOVE': return { items: state.items.filter(i => i.product.id !== action.id) };
+    case 'UPDATE_QTY': return { items: state.items.map(i => i.product.id === action.id ? { ...i, qty: action.qty } : i).filter(i => i.qty > 0) };
+    case 'CLEAR': return { items: [] };
+    default: return state;
   }
 }
 
@@ -42,23 +36,10 @@ const CartContext = createContext<{
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
-
   const totalCount = state.items.reduce((s, i) => s + i.qty, 0);
-  const totalPrice = state.items.reduce((s, i) => {
-    const price = parseFloat((i.product.price ?? '0').replace('$', ''));
-    return s + price * i.qty;
-  }, 0);
-
+  const totalPrice = state.items.reduce((s, i) => s + parseFloat((i.product.price ?? '0').replace('$', '')) * i.qty, 0);
   return (
-    <CartContext.Provider value={{
-      items: state.items,
-      addItem: (p) => dispatch({ type: 'ADD', product: p }),
-      removeItem: (id) => dispatch({ type: 'REMOVE', id }),
-      updateQty: (id, qty) => dispatch({ type: 'UPDATE_QTY', id, qty }),
-      clearCart: () => dispatch({ type: 'CLEAR' }),
-      totalCount,
-      totalPrice,
-    }}>
+    <CartContext.Provider value={{ items: state.items, addItem: p => dispatch({ type: 'ADD', product: p }), removeItem: id => dispatch({ type: 'REMOVE', id }), updateQty: (id, qty) => dispatch({ type: 'UPDATE_QTY', id, qty }), clearCart: () => dispatch({ type: 'CLEAR' }), totalCount, totalPrice }}>
       {children}
     </CartContext.Provider>
   );

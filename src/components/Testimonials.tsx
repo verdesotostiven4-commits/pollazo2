@@ -2,21 +2,12 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Star, Send, Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-interface Testimonial {
-  id: string;
-  author_name: string;
-  stars: number;
-  comment: string;
-  photo_url: string | null;
-  created_at: string;
-}
-
-const ADMIN_HOLD_MS = 3000;
+interface Testimonial { id: string; author_name: string; stars: number; comment: string; created_at: string; }
 
 function StarRating({ value, onChange }: { value: number; onChange?: (v: number) => void }) {
   return (
     <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map(n => (
+      {[1,2,3,4,5].map(n => (
         <button key={n} type="button" onClick={() => onChange?.(n)} className={onChange ? 'cursor-pointer active:scale-90 transition-transform' : 'cursor-default'}>
           <Star size={18} className={n <= value ? 'text-yellow-400 fill-yellow-400' : 'text-gray-200 fill-gray-100'} />
         </button>
@@ -37,7 +28,7 @@ export default function Testimonials() {
   const [success, setSuccess] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
-  const holdRafRef = useRef<number>();
+  const holdRafRef = useRef<number | null>(null);
   const holdStartRef = useRef<number>(0);
 
   const avg = testimonials.length > 0 ? testimonials.reduce((s, t) => s + t.stars, 0) / testimonials.length : 0;
@@ -57,34 +48,22 @@ export default function Testimonials() {
     const { error: err } = await supabase.from('testimonials').insert({ author_name: name.trim(), stars, comment: comment.trim(), photo_url: null });
     setSubmitting(false);
     if (err) { setError('Error al enviar. Intenta de nuevo.'); return; }
-    setSuccess(true);
-    setName(''); setComment(''); setStars(5);
+    setSuccess(true); setName(''); setComment(''); setStars(5);
     setTimeout(() => { setSuccess(false); setShowForm(false); }, 2000);
     fetchTestimonials();
-  };
-
-  const handleDelete = async (id: string) => {
-    await supabase.from('testimonials').delete().eq('id', id);
-    setTestimonials(prev => prev.filter(t => t.id !== id));
   };
 
   const startHold = () => {
     holdStartRef.current = performance.now();
     const tick = (now: number) => {
-      const elapsed = now - holdStartRef.current;
-      const pct = Math.min(100, (elapsed / ADMIN_HOLD_MS) * 100);
+      const pct = Math.min(100, ((now - holdStartRef.current) / 3000) * 100);
       setHoldProgress(pct);
-      if (elapsed < ADMIN_HOLD_MS) { holdRafRef.current = requestAnimationFrame(tick); }
+      if (pct < 100) holdRafRef.current = requestAnimationFrame(tick);
       else { setAdminMode(true); setHoldProgress(0); }
     };
     holdRafRef.current = requestAnimationFrame(tick);
   };
-
-  const cancelHold = () => {
-    if (holdRafRef.current) cancelAnimationFrame(holdRafRef.current);
-    setHoldProgress(0);
-  };
-
+  const cancelHold = () => { if (holdRafRef.current) cancelAnimationFrame(holdRafRef.current); setHoldProgress(0); };
   useEffect(() => () => { if (holdRafRef.current) cancelAnimationFrame(holdRafRef.current); }, []);
 
   return (
@@ -112,13 +91,12 @@ export default function Testimonials() {
             <div className="flex-1 space-y-1">
               {[5,4,3,2,1].map(star => {
                 const cnt = testimonials.filter(t => t.stars === star).length;
-                const pct = testimonials.length > 0 ? (cnt / testimonials.length) * 100 : 0;
                 return (
                   <div key={star} className="flex items-center gap-2">
                     <span className="text-[10px] text-gray-500 w-2">{star}</span>
                     <Star size={8} className="text-yellow-400 fill-yellow-400 flex-shrink-0" />
                     <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-yellow-400 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
+                      <div className="h-full bg-yellow-400 rounded-full" style={{ width: `${testimonials.length > 0 ? (cnt / testimonials.length) * 100 : 0}%` }} />
                     </div>
                     <span className="text-[10px] text-gray-400 w-4 text-right">{cnt}</span>
                   </div>
@@ -132,9 +110,7 @@ export default function Testimonials() {
         <div className="px-4 py-4 border-b border-gray-100 bg-orange-50/50">
           {success ? (
             <div className="flex flex-col items-center py-4 gap-2">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <Star size={22} className="text-green-500 fill-green-500" />
-              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><Star size={22} className="text-green-500 fill-green-500" /></div>
               <p className="text-green-700 font-bold text-sm">¡Gracias por tu opinión!</p>
             </div>
           ) : (
@@ -166,7 +142,7 @@ export default function Testimonials() {
                   <p className="font-bold text-gray-900 text-sm truncate">{t.author_name}</p>
                   <div className="flex items-center gap-1 flex-shrink-0">
                     <StarRating value={t.stars} />
-                    {adminMode && <button onClick={() => handleDelete(t.id)} className="ml-1 text-red-400 hover:text-red-600"><Trash2 size={13} /></button>}
+                    {adminMode && <button onClick={() => supabase.from('testimonials').delete().eq('id', t.id).then(() => setTestimonials(prev => prev.filter(x => x.id !== t.id)))} className="ml-1 text-red-400 hover:text-red-600"><Trash2 size={13} /></button>}
                   </div>
                 </div>
                 <p className="text-gray-600 text-xs leading-relaxed mt-0.5">{t.comment}</p>

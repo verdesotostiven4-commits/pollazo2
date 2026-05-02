@@ -3,13 +3,7 @@ import { useCart } from '../context/CartContext';
 
 type Screen = 'home' | 'catalog' | 'cart' | 'info';
 
-interface Props {
-  screen: Screen;
-  onNavigate: (s: Screen) => void;
-  scrolled: boolean;
-}
-
-export default function AppHeader({ onNavigate }: Props) {
+export default function AppHeader({ onNavigate }: { onNavigate: (s: Screen) => void }) {
   const { totalCount } = useCart();
   return (
     <header className="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between flex-shrink-0" style={{ boxShadow: '0 1px 8px rgba(0,0,0,0.06)' }}>
@@ -22,11 +16,7 @@ export default function AppHeader({ onNavigate }: Props) {
       </div>
       <button onClick={() => onNavigate('cart')} className="relative p-2">
         <ShoppingCart size={22} className="text-gray-700" />
-        {totalCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center min-w-[18px] min-h-[18px]">
-            {totalCount}
-          </span>
-        )}
+        {totalCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-orange-500 text-white text-[10px] font-black rounded-full min-w-[18px] min-h-[18px] flex items-center justify-center px-0.5">{totalCount}</span>}
       </button>
     </header>
   );
