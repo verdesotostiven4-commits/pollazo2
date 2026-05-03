@@ -14,6 +14,7 @@ function safePublicCopy(): Plugin {
       if (!fs.existsSync(publicDir)) return;
 
       const imageExts = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.ico', '.avif'];
+      const staticFiles = ['_redirects', 'sw.js', 'manifest.json'];
 
       function copyDir(srcDir: string, destDir: string) {
         if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
@@ -27,7 +28,7 @@ function safePublicCopy(): Plugin {
               copyDir(src, dest);
             } else if (stat.isFile()) {
               const ext = path.extname(entry).toLowerCase();
-              if (imageExts.includes(ext)) {
+              if (imageExts.includes(ext) || staticFiles.includes(entry)) {
                 fs.copyFileSync(src, dest);
               }
             }
