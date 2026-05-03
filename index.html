@@ -8,9 +8,11 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#ea580c" />
+    <meta name="theme-color" content="#E67E22" />
+
+    <!-- iOS PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Pollazo" />
     <link rel="apple-touch-icon" href="/Picsart_26-03-14_04-02-01-579.png" />
 
@@ -19,8 +21,42 @@
     <meta property="og:description" content="Pollos frescos y delivery en Puerto Ayora, Galápagos." />
     <meta property="og:image" content="/Picsart_26-03-14_04-02-01-579.png" />
     <meta property="og:type" content="website" />
+
+    <!-- Native HTML splash screen: shown instantly before React hydrates -->
+    <style>
+      #html-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #E67E22;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.35s ease;
+      }
+      #html-splash.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #html-splash img {
+        width: 172px;
+        height: 172px;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 32px rgba(0,0,0,0.28)) drop-shadow(0 0 18px rgba(251,146,60,0.45));
+        animation: splashPulse 1.8s ease-in-out infinite;
+      }
+      @keyframes splashPulse {
+        0%, 100% { transform: scale(1); }
+        50%       { transform: scale(1.04); }
+      }
+    </style>
   </head>
   <body>
+    <!-- Native splash: hidden once React mounts -->
+    <div id="html-splash">
+      <img src="/Picsart_26-03-14_04-02-01-579.png" alt="La Casa del Pollazo" />
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
@@ -29,6 +65,17 @@
           navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
       }
+
+      // Remove HTML splash once React has had a chance to render
+      window.addEventListener('load', () => {
+        var splash = document.getElementById('html-splash');
+        if (splash) {
+          setTimeout(function() {
+            splash.classList.add('fade-out');
+            setTimeout(function() { splash.remove(); }, 380);
+          }, 300);
+        }
+      });
     </script>
   </body>
 </html>
