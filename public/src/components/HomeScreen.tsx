@@ -179,7 +179,7 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
               animation: 'logoGlowPulse 2.8s ease-in-out infinite',
             }} />
             <img
-              src="/Picsart_26-03-14_04-02-01-579.png"
+              src="/logo-final.png"
               alt="La Casa del Pollazo"
               className="w-36 h-36 object-contain relative z-10"
               style={{

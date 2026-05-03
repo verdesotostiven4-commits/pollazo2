@@ -74,7 +74,7 @@ export default function Header() {
         <div className="flex items-center justify-between py-3">
           <a href="#hero" className="flex items-center gap-2 group">
             <img
-              src="/Picsart_26-03-14_04-02-01-579.png"
+              src="/logo-final.png"
               alt="Pollazo Galapagueño"
               className="h-10 w-auto group-hover:scale-105 transition-transform duration-300"
               style={{ objectFit: 'contain' }}

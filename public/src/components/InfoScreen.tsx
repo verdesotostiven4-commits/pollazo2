@@ -152,7 +152,7 @@ export default function InfoScreen({ onInstall, canInstall }: Props) {
               background: 'radial-gradient(circle, rgba(255,255,255,0.28) 0%, transparent 70%)',
               animation: 'logoGlowPulse 2.8s ease-in-out infinite',
             }} />
-            <img src="/Picsart_26-03-14_04-02-01-579.png" alt="logo" className="w-20 h-20 object-contain relative z-10 drop-shadow-xl" />
+            <img src="/logo-final.png" alt="logo" className="w-20 h-20 object-contain relative z-10 drop-shadow-xl" />
           </div>
           <div>
             <h2 className="text-white font-black text-xl leading-tight" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
