@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Shield, Store, Globe, Loader2, CheckCircle2, Smartphone, MapPin, Share, X } from 'lucide-react';
+import { Download, Shield, Store, Globe, Loader2, CheckCircle2, Smartphone, MapPin } from 'lucide-react';
 
 interface Props {
   onInstall: () => void;
@@ -9,12 +9,7 @@ interface Props {
 
 type InstallState = 'idle' | 'waiting' | 'success';
 
-function isIOS(): boolean {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-}
-
-const LOGO_URL = '/logo-transparent.png';
+const LOGO_URL = '/Picsart_26-03-14_04-02-01-579.png';
 
 const BENTO_PHOTOS = [
   {
@@ -47,7 +42,6 @@ const BENTO_PHOTOS = [
 export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Props) {
   const [visible, setVisible] = useState(false);
   const [installState, setInstallState] = useState<InstallState>('idle');
-  const [showIOSModal, setShowIOSModal] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 80);
@@ -62,10 +56,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
 
   const handleInstallClick = async () => {
     if (installState !== 'idle') return;
-    if (isIOS()) {
-      setShowIOSModal(true);
-      return;
-    }
     setInstallState('waiting');
     await onInstall();
     // Reset after 12s if appinstalled never fires
@@ -362,71 +352,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
         </div>
 
       </div>
-
-      {/* ═══ iOS INSTALL MODAL ═══ */}
-      {showIOSModal && (
-        <div
-          className="fixed inset-0 z-[400] flex items-end justify-center"
-          style={{ background: 'rgba(0,0,0,0.55)' }}
-          onClick={() => setShowIOSModal(false)}
-        >
-          <div
-            className="w-full max-w-sm mx-4 mb-6 rounded-3xl overflow-hidden"
-            style={{ background: '#fff', boxShadow: '0 -4px 40px rgba(0,0,0,0.25)' }}
-            onClick={e => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 pt-5 pb-3" style={{ background: '#E67E22' }}>
-              <p className="font-black text-white text-base">Instalar en iPhone</p>
-              <button
-                onClick={() => setShowIOSModal(false)}
-                className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(255,255,255,0.25)' }}
-              >
-                <X size={15} className="text-white" />
-              </button>
-            </div>
-            {/* Steps */}
-            <div className="px-5 py-5 space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-black text-white text-sm" style={{ background: '#E67E22' }}>1</div>
-                <div>
-                  <p className="font-bold text-gray-900 text-sm leading-snug">Pulsa el botón Compartir de Safari</p>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <div className="rounded-lg p-1.5" style={{ background: '#f0f0f0' }}>
-                      <Share size={16} className="text-gray-600" />
-                    </div>
-                    <p className="text-xs text-gray-500">El cuadro con flecha hacia arriba en la barra inferior</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-black text-white text-sm" style={{ background: '#E67E22' }}>2</div>
-                <div>
-                  <p className="font-bold text-gray-900 text-sm leading-snug">Desliza y pulsa <span className="font-black">"Agregar al inicio"</span></p>
-                  <p className="text-xs text-gray-500 mt-0.5">Desplázate hacia abajo en el menú de opciones</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-black text-white text-sm" style={{ background: '#E67E22' }}>3</div>
-                <div>
-                  <p className="font-bold text-gray-900 text-sm leading-snug">Confirma pulsando <span className="font-black">"Agregar"</span></p>
-                  <p className="text-xs text-gray-500 mt-0.5">El ícono del Pollazo aparecerá en tu pantalla de inicio</p>
-                </div>
-              </div>
-            </div>
-            <div className="px-5 pb-5">
-              <button
-                onClick={() => setShowIOSModal(false)}
-                className="w-full py-3.5 rounded-2xl font-black text-white text-sm"
-                style={{ background: '#E67E22' }}
-              >
-                Entendido
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
