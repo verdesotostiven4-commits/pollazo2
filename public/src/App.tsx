@@ -9,7 +9,6 @@ import InfoScreen from './components/InfoScreen';
 import BottomNav from './components/BottomNav';
 import AppHeader from './components/AppHeader';
 import OrderConfirmation from './components/OrderConfirmation';
-import SplashScreen from './components/SplashScreen';
 import LandingPage from './components/LandingPage';
 import { useCart } from './context/CartContext';
 import { buildWhatsAppUrl } from './utils/whatsapp';
@@ -121,7 +120,6 @@ export default function App() {
   const [landingDone, setLandingDone] = useState(() => {
     return isStandalone() || !!sessionStorage.getItem(LANDING_DISMISSED_KEY);
   });
-  const [splashDone, setSplashDone] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [canInstall, setCanInstall] = useState(false);
   const [pendingCategory, setPendingCategory] = useState<Category | null>(null);
@@ -163,7 +161,6 @@ export default function App() {
   return (
     <CartProvider>
       <FlyToCartProvider>
-        {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
         <AppShell
           initialCategory={pendingCategory}
           onClearCategory={() => setPendingCategory(null)}

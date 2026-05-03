@@ -106,10 +106,10 @@ function BestsellerCarousel() {
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {pairs.map((pair, pi) => (
-            <div key={pi} className="flex gap-3 px-1 min-w-full">
+            <div key={pi} className="flex gap-3 px-1 min-w-full items-stretch">
               {pair.map(product => (
-                <div key={product.id} className="flex-1">
-                  <ProductCard product={product} />
+                <div key={product.id} className="flex-1 flex flex-col">
+                  <ProductCard product={product} className="flex-1" />
                 </div>
               ))}
               {pair.length < 2 && <div className="flex-1" />}
@@ -154,16 +154,21 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
   return (
     <div className="flex flex-col bg-gray-50">
       {/* HERO */}
-      <div
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(145deg, #f97316 0%, #fb923c 35%, #fbbf24 70%, #fde68a 100%)' }}
-      >
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(ellipse at 15% 35%, rgba(255,255,255,0.12) 0%, transparent 55%), radial-gradient(ellipse at 88% 12%, rgba(249,115,22,0.15) 0%, transparent 50%)',
-        }} />
+      <div className="relative overflow-hidden hero-water">
+        {/* Water ripple overlays */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-20%] left-[-10%] w-72 h-72 rounded-full" style={{
+            background: 'radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 65%)',
+            animation: 'water-ripple 10s ease-in-out infinite',
+          }} />
+          <div className="absolute bottom-[-15%] right-[-5%] w-60 h-60 rounded-full" style={{
+            background: 'radial-gradient(circle, rgba(254,240,138,0.3) 0%, transparent 65%)',
+            animation: 'water-ripple-2 13s ease-in-out infinite',
+          }} />
+        </div>
 
         <div className="px-4 pt-10 pb-8 relative z-10">
-          <p className="text-white text-xs font-semibold text-center mb-4 tracking-wide" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+          <p className="text-white/90 text-xs font-semibold text-center mb-4 tracking-wide" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
             {greeting}
           </p>
 
@@ -185,18 +190,18 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
           </div>
 
           <div className="text-center mb-5">
-            <h1 className="font-black text-3xl leading-tight" style={{ color: '#7c2d12', textShadow: '0 1px 0 rgba(255,255,255,0.35)' }}>
+            <h1 className="text-white font-black text-3xl leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.25)' }}>
               Pollo fresco
             </h1>
-            <h2 className="font-black text-3xl leading-tight" style={{ color: '#ea580c', textShadow: '0 1px 0 rgba(255,255,255,0.3)' }}>
+            <h2 className="font-black text-3xl leading-tight" style={{ color: '#FFD700', textShadow: '0 2px 12px rgba(0,0,0,0.25)' }}>
               directo a tu puerta
             </h2>
-            <p className="text-sm font-semibold mt-2" style={{ color: '#9a3412' }}>
+            <p className="text-white/90 text-sm font-semibold mt-2" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
               Pedidos rápidos por WhatsApp
             </p>
-            <div className="inline-flex items-center gap-1.5 bg-white/40 backdrop-blur-sm rounded-full px-3.5 py-1.5 mt-2.5 border border-white/50">
-              <div className="w-1.5 h-1.5 bg-orange-600 rounded-full animate-pulse" />
-              <span className="text-xs font-semibold" style={{ color: '#7c2d12' }}>Puerto Ayora, Galápagos</span>
+            <div className="inline-flex items-center gap-1.5 bg-black/20 backdrop-blur-sm rounded-full px-3.5 py-1.5 mt-2.5 border border-white/20">
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+              <span className="text-white/90 text-xs font-semibold">Puerto Ayora, Galápagos</span>
             </div>
           </div>
 
@@ -204,11 +209,11 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
             {[
               { icon: <Clock size={11} />, text: '7 AM – 9 PM' },
               { icon: <Truck size={11} />, text: 'Delivery' },
-              { icon: <Star size={11} />, text: 'Calidad garantizada' },
+              { icon: <Star size={11} className="fill-white" />, text: 'Calidad garantizada' },
             ].map(({ icon, text }) => (
-              <div key={text} className="flex items-center gap-1.5 bg-white/40 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/50">
-                <span style={{ color: '#9a3412' }}>{icon}</span>
-                <span className="text-xs font-semibold" style={{ color: '#7c2d12' }}>{text}</span>
+              <div key={text} className="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20">
+                <span className="text-white">{icon}</span>
+                <span className="text-white/90 text-xs font-semibold">{text}</span>
               </div>
             ))}
           </div>
@@ -216,14 +221,15 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
           <div className="flex gap-3">
             <button
               onClick={() => onNavigate('catalog')}
-              className="flex-1 bg-white font-black py-3.5 rounded-2xl text-sm shadow-xl active:scale-95 transition-transform"
-              style={{ color: '#b45309' }}
+              className="flex-1 bg-white font-black py-3.5 rounded-2xl text-sm shadow-lg active:scale-95 transition-transform"
+              style={{ color: '#c2410c', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
             >
               Ver catálogo
             </button>
             <button
               onClick={openWhatsApp}
-              className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white font-bold py-3.5 rounded-2xl text-sm shadow-xl active:scale-95 transition-transform"
+              className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white font-bold py-3.5 rounded-2xl text-sm active:scale-95 transition-transform"
+              style={{ boxShadow: '0 4px 20px rgba(34,197,94,0.35)' }}
             >
               <MessageCircle size={16} />
               WhatsApp

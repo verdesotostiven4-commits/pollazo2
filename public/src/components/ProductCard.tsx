@@ -58,7 +58,7 @@ export default function ProductCard({ product, style, className = '', compact = 
         </div>
         <div className="flex flex-col flex-1 p-3 gap-1.5">
           <h3 className="text-gray-900 font-bold text-[13px] leading-snug line-clamp-2 flex-1">{product.name}</h3>
-          <div>
+          <div className="flex items-center" style={{ minHeight: 28 }}>
             {consult ? (
               <span className="text-[11px] text-gray-400 font-medium">A consultar</span>
             ) : (
@@ -115,7 +115,7 @@ export default function ProductCard({ product, style, className = '', compact = 
           <p className="text-gray-400 text-xs leading-relaxed mb-3 line-clamp-2 flex-1">{product.description}</p>
         )}
 
-        <div className="flex items-end justify-between mb-3 mt-auto">
+        <div className="flex items-center mb-3 mt-auto" style={{ minHeight: 32 }}>
           {consult ? (
             <div className="flex items-center gap-1 text-gray-400 text-xs font-medium">
               <MessageCircle size={12} className="text-orange-400" />

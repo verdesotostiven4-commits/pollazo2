@@ -145,10 +145,7 @@ export default function InfoScreen({ onInstall, canInstall }: Props) {
     <div className="bg-gray-50 px-4 py-5 space-y-4 min-h-full">
 
       {/* BRAND CARD — matches Home hero */}
-      <div
-        className="rounded-3xl overflow-hidden"
-        style={{ background: 'linear-gradient(145deg, #f97316 0%, #fb923c 35%, #fbbf24 70%, #fde68a 100%)' }}
-      >
+      <div className="rounded-3xl overflow-hidden hero-water">
         <div className="px-5 py-6 flex flex-col items-center text-center gap-3">
           <div className="relative">
             <div className="absolute inset-0 rounded-full" style={{
@@ -158,11 +155,11 @@ export default function InfoScreen({ onInstall, canInstall }: Props) {
             <img src="/Picsart_26-03-14_04-02-01-579.png" alt="logo" className="w-20 h-20 object-contain relative z-10 drop-shadow-xl" />
           </div>
           <div>
-            <h2 className="font-black text-xl leading-tight" style={{ color: '#7c2d12', textShadow: '0 1px 0 rgba(255,255,255,0.4)' }}>
+            <h2 className="text-white font-black text-xl leading-tight" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
               La Casa del Pollazo
             </h2>
-            <p className="font-bold text-sm mt-0.5" style={{ color: '#9a3412' }}>El Mirador</p>
-            <p className="text-xs mt-1" style={{ color: '#c2410c' }}>Puerto Ayora, Galápagos</p>
+            <p className="text-white/90 font-bold text-sm mt-0.5">El Mirador</p>
+            <p className="text-white/70 text-xs mt-1">Puerto Ayora, Galápagos</p>
           </div>
         </div>
       </div>
