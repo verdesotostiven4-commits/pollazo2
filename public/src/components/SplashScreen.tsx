@@ -19,7 +19,7 @@ export default function SplashScreen({ onDone }: Props) {
     <div
       className="fixed inset-0 flex flex-col items-center justify-center z-[200]"
       style={{
-        background: 'linear-gradient(145deg, #9a3412 0%, #c2410c 25%, #ea580c 55%, #f97316 80%, #f59e0b 100%)',
+        background: '#E67E22',
         opacity: phase === 'out' ? 0 : 1,
         transition: phase === 'out' ? 'opacity 0.4s ease' : 'none',
         pointerEvents: phase === 'out' ? 'none' : 'all',
@@ -51,10 +51,10 @@ export default function SplashScreen({ onDone }: Props) {
         }}
       >
         <img
-          src="/Picsart_26-03-14_04-02-01-579.png"
+          src="/logo.png"
           alt="La Casa del Pollazo"
           className="w-40 h-40 object-contain"
-          style={{ filter: 'drop-shadow(0 16px 48px rgba(0,0,0,0.4)) drop-shadow(0 0 20px rgba(251,146,60,0.5))' }}
+          style={{ filter: 'drop-shadow(0 16px 48px rgba(0,0,0,0.3))' }}
         />
       </div>
 

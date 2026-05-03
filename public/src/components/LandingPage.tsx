@@ -14,7 +14,7 @@ function isIOS(): boolean {
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
-const LOGO_URL = '/Picsart_26-03-14_04-02-01-579.png';
+const LOGO_URL = '/logo.png';
 
 const BENTO_PHOTOS = [
   {
@@ -107,32 +107,30 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
 
           {/* Logo */}
           <div
-            className="mb-6"
+            className="mb-6 relative"
             style={{
               opacity: visible ? 1 : 0,
               transform: visible ? 'translateY(0) scale(1)' : 'translateY(-36px) scale(0.75)',
               transition: 'opacity 0.7s cubic-bezier(0.34,1.56,0.64,1), transform 0.7s cubic-bezier(0.34,1.56,0.64,1)',
             }}
           >
-            <div className="relative">
-              <div
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  background: 'radial-gradient(circle, rgba(251,191,36,0.35) 0%, transparent 68%)',
-                  animation: 'logoGlowPulse 2.6s ease-in-out infinite',
-                  transform: 'scale(1.4)',
-                }}
-              />
-              <img
-                src={LOGO_URL}
-                alt="La Casa del Pollazo"
-                className="w-36 h-36 object-contain relative z-10"
-                style={{
-                  filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.3)) drop-shadow(0 0 16px rgba(251,146,60,0.4))',
-                  animation: 'splashFloat 3.4s ease-in-out infinite',
-                }}
-              />
-            </div>
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'radial-gradient(circle, rgba(251,191,36,0.35) 0%, transparent 68%)',
+                animation: 'logoGlowPulse 2.6s ease-in-out infinite',
+                transform: 'scale(1.4)',
+              }}
+            />
+            <img
+              src={LOGO_URL}
+              alt="La Casa del Pollazo"
+              className="w-36 h-36 object-contain relative z-10"
+              style={{
+                filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.3))',
+                animation: 'splashFloat 3.4s ease-in-out infinite',
+              }}
+            />
           </div>
 
           {/* Title */}
