@@ -1,0 +1,27 @@
+export type Category =
+  | 'Pollos'
+  | 'Embutidos'
+  | 'Lácteos y refrigerados'
+  | 'Abarrotes y básicos'
+  | 'Salsas, aliños y aceites'
+  | 'Bebidas'
+  | 'Frutas y verduras'
+  | 'Snacks y dulces'
+  | 'Cuidado personal'
+  | 'Limpieza y hogar';
+
+export interface Product {
+  id: string;
+  name: string;
+  category: Category;
+  price?: string;
+  description?: string;
+  image?: string;
+  badge?: string;
+  available?: boolean;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
