@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ShoppingCart, Search, X, Home, Grid3X3, Info, Trash2, Plus, Minus, MessageCircle, Clock, MapPin, ChevronRight } from 'lucide-react';
+import { ShoppingCart, Search, X, Hop as Home, Grid3x2 as Grid3X3, Info, Trash2, Plus, Minus, MessageCircle, Clock, MapPin, ChevronRight } from 'lucide-react';
 import { CartProvider, useCart } from './context/CartContext';
 import { products, categories } from './data/products';
 import ProductCard from './components/ProductCard';
