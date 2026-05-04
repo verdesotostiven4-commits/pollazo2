@@ -1,5 +1,5 @@
-const CACHE = 'pollazo-v2';
-const ASSETS = ['/', '/manifest.json', '/logo-final.png'];
+const CACHE = 'pollazo-v1';
+const ASSETS = ['/', '/manifest.json', '/Picsart_26-03-14_04-02-01-579.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {}));

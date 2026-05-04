@@ -43,7 +43,7 @@ export default function AppHeader({ screen, onNavigate, scrolled: _scrolled }: P
         {isHome ? (
           <div className="flex items-center gap-2.5">
             <img
-              src="/logo-final.png"
+              src="/Picsart_26-03-14_04-02-01-579.png"
               alt="logo"
               className="h-9 w-auto"
               style={{ objectFit: 'contain' }}

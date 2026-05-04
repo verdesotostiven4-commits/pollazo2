@@ -51,7 +51,7 @@ export default function SplashScreen({ onDone }: Props) {
         }}
       >
         <img
-          src="/logo-final.png"
+          src="/logo.png"
           alt="La Casa del Pollazo"
           className="w-40 h-40 object-contain"
           style={{ filter: 'drop-shadow(0 16px 48px rgba(0,0,0,0.3))' }}

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Search, X } from 'lucide-react';
 import { products, categories } from '../data/products';
 import ProductCard from './ProductCard';
-import AnnouncementBanner from './AnnouncementBanner';
 import { Category } from '../types';
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -127,7 +126,6 @@ export default function CatalogScreen({ initialCategory = 'Todos', onCategoryCha
 
   return (
     <div className="flex flex-col">
-      <AnnouncementBanner />
       {/* SEARCH — sticky */}
       <div className="px-4 pt-3 pb-2 bg-white sticky top-0 z-20 border-b border-gray-50">
         <div className="relative">

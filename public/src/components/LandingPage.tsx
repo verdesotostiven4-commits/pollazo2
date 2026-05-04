@@ -14,7 +14,7 @@ function isIOS(): boolean {
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
-const LOGO_URL = '/logo-final.png';
+const LOGO_URL = '/logo.png';
 
 const BENTO_PHOTOS = [
   {

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { MessageCircle, Clock, Truck, ChevronRight, Star, ChevronLeft } from 'lucide-react';
 import { products } from '../data/products';
 import ProductCard from './ProductCard';
-import AnnouncementBanner from './AnnouncementBanner';
 import { WHATSAPP } from '../utils/whatsapp';
 import { Category } from '../types';
 
@@ -154,7 +153,6 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
 
   return (
     <div className="flex flex-col bg-gray-50">
-      <AnnouncementBanner />
       {/* HERO */}
       <div className="relative overflow-hidden hero-water">
         {/* Water ripple overlays */}
@@ -181,7 +179,7 @@ export default function HomeScreen({ onNavigate, onNavigateToCategory }: Props) 
               animation: 'logoGlowPulse 2.8s ease-in-out infinite',
             }} />
             <img
-              src="/logo-final.png"
+              src="/Picsart_26-03-14_04-02-01-579.png"
               alt="La Casa del Pollazo"
               className="w-36 h-36 object-contain relative z-10"
               style={{

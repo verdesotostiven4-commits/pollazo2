@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { CartProvider } from './context/CartContext';
 import { FlyToCartProvider } from './context/FlyToCartContext';
-import { AdminProvider } from './context/AdminContext';
 import FlyParticleLayer from './components/FlyParticleLayer';
 import HomeScreen from './components/HomeScreen';
 import CatalogScreen from './components/CatalogScreen';
@@ -11,7 +10,6 @@ import BottomNav from './components/BottomNav';
 import AppHeader from './components/AppHeader';
 import OrderConfirmation from './components/OrderConfirmation';
 import LandingPage from './components/LandingPage';
-import AdminDashboard from './components/AdminDashboard';
 import { useCart } from './context/CartContext';
 import { buildWhatsAppUrl } from './utils/whatsapp';
 import { supabase } from './lib/supabase';
@@ -33,10 +31,6 @@ function isStandalone(): boolean {
   );
 }
 
-function isAdminRoute(): boolean {
-  return window.location.pathname === '/admin';
-}
-
 function AppShell({ initialCategory, onClearCategory }: { initialCategory: Category | null; onClearCategory: () => void }) {
   const [screen, setScreen] = useState<Screen>('home');
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -46,6 +40,7 @@ function AppShell({ initialCategory, onClearCategory }: { initialCategory: Categ
   const { items, clearCart } = useCart();
   const mainRef = useRef<HTMLElement>(null);
 
+  // If a category was pre-selected from Home, land on catalog
   useEffect(() => {
     if (initialCategory) {
       setScreen('catalog');
@@ -122,7 +117,6 @@ function AppShell({ initialCategory, onClearCategory }: { initialCategory: Categ
 }
 
 export default function App() {
-  const [isAdmin] = useState(isAdminRoute);
   const [landingDone, setLandingDone] = useState(() => {
     return isStandalone() || !!sessionStorage.getItem(LANDING_DISMISSED_KEY);
   });
@@ -142,6 +136,7 @@ export default function App() {
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
+    // Show the native install prompt — appinstalled event handles the rest
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     setDeferredPrompt(null);
@@ -153,37 +148,24 @@ export default function App() {
     setLandingDone(true);
   };
 
-  // Admin route — wrap in AdminProvider only
-  if (isAdmin) {
-    return (
-      <AdminProvider>
-        <AdminDashboard />
-      </AdminProvider>
-    );
-  }
-
   if (!landingDone) {
     return (
-      <AdminProvider>
-        <LandingPage
-          onInstall={handleInstall}
-          canInstall={canInstall}
-          onContinueWeb={handleContinueWeb}
-        />
-      </AdminProvider>
+      <LandingPage
+        onInstall={handleInstall}
+        canInstall={canInstall}
+        onContinueWeb={handleContinueWeb}
+      />
     );
   }
 
   return (
-    <AdminProvider>
-      <CartProvider>
-        <FlyToCartProvider>
-          <AppShell
-            initialCategory={pendingCategory}
-            onClearCategory={() => setPendingCategory(null)}
-          />
-        </FlyToCartProvider>
-      </CartProvider>
-    </AdminProvider>
+    <CartProvider>
+      <FlyToCartProvider>
+        <AppShell
+          initialCategory={pendingCategory}
+          onClearCategory={() => setPendingCategory(null)}
+        />
+      </FlyToCartProvider>
+    </CartProvider>
   );
 }

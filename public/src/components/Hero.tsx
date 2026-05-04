@@ -40,7 +40,7 @@ export default function Hero() {
           <div className="relative inline-flex" style={{ animation: 'logofloat 3s ease-in-out infinite' }}>
             <div className="absolute inset-0 -z-10 blur-3xl scale-110" style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.55) 0%, rgba(234,88,12,0.25) 60%, transparent 100%)' }} />
             <img
-              src="/logo-final.png"
+              src="/Picsart_26-03-14_04-02-01-579.png"
               alt="Pollazo Galapagueño El Mirador"
               className="w-48 sm:w-56 md:w-64 h-auto"
               style={{

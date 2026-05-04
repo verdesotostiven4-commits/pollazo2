@@ -22,7 +22,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="mb-4">
               <img
-                src="/logo-final.png"
+                src="/Picsart_26-03-14_04-02-01-579.png"
                 alt="Pollazo Galapagueño"
                 className="w-28 h-auto"
                 style={{ objectFit: 'contain' }}
