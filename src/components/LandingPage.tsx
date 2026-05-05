@@ -9,38 +9,29 @@ interface Props {
 
 type InstallState = 'idle' | 'waiting' | 'success';
 
+const LOGO_URL = '/logo-pollazo.png';
+
 function isIOS(): boolean {
   return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
-const LOGO_URL = '/logo-transparent.png';
-
 const BENTO_PHOTOS = [
   {
     src: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600',
     alt: 'Pollo asado',
-    span: 'col-span-2 row-span-2',
   },
   {
     src: 'https://images.pexels.com/photos/3887985/pexels-photo-3887985.jpeg?auto=compress&cs=tinysrgb&w=400',
     alt: 'Local',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    src: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=400',
-    alt: 'Equipo',
-    span: 'col-span-1 row-span-1',
   },
   {
     src: 'https://images.pexels.com/photos/2668308/pexels-photo-2668308.jpeg?auto=compress&cs=tinysrgb&w=400',
     alt: 'Bebidas',
-    span: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=400',
+    src: 'https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=700',
     alt: 'Productos frescos',
-    span: 'col-span-2 row-span-1',
   },
 ];
 
@@ -68,7 +59,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
     }
     setInstallState('waiting');
     await onInstall();
-    // Reset after 12s if appinstalled never fires
     const t = setTimeout(() => {
       setInstallState(prev => (prev === 'waiting' ? 'idle' : prev));
     }, 12000);
@@ -105,7 +95,7 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
         {/* ═══ HERO SECTION ═══ */}
         <div className="flex flex-col items-center px-6 pt-14 pb-10">
 
-          {/* Logo */}
+          {/* Logo — transparent, no white background, floats on orange */}
           <div
             className="mb-6"
             style={{
@@ -126,10 +116,11 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
               <img
                 src={LOGO_URL}
                 alt="La Casa del Pollazo"
-                className="w-36 h-36 object-contain relative z-10"
+                className="w-44 h-44 object-contain relative z-10"
                 style={{
                   filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.3)) drop-shadow(0 0 16px rgba(251,146,60,0.4))',
                   animation: 'splashFloat 3.4s ease-in-out infinite',
+                  background: 'transparent',
                 }}
               />
             </div>
@@ -277,40 +268,17 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
             Nuestra cocina, tu mesa
           </h2>
           <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto auto auto' }}>
-            {/* Large featured */}
             <div className="col-span-2 row-span-2 rounded-2xl overflow-hidden" style={{ minHeight: 180 }}>
-              <img
-                src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Pollo asado"
-                className="w-full h-full object-cover"
-                style={{ minHeight: 180 }}
-              />
-            </div>
-            {/* Small tiles */}
-            <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden" style={{ minHeight: 87 }}>
-              <img
-                src="https://images.pexels.com/photos/3887985/pexels-photo-3887985.jpeg?auto=compress&cs=tinysrgb&w=300"
-                alt="Local"
-                className="w-full h-full object-cover"
-                style={{ minHeight: 87 }}
-              />
+              <img src={BENTO_PHOTOS[0].src} alt={BENTO_PHOTOS[0].alt} className="w-full h-full object-cover" style={{ minHeight: 180 }} />
             </div>
             <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden" style={{ minHeight: 87 }}>
-              <img
-                src="https://images.pexels.com/photos/2668308/pexels-photo-2668308.jpeg?auto=compress&cs=tinysrgb&w=300"
-                alt="Bebidas"
-                className="w-full h-full object-cover"
-                style={{ minHeight: 87 }}
-              />
+              <img src={BENTO_PHOTOS[1].src} alt={BENTO_PHOTOS[1].alt} className="w-full h-full object-cover" style={{ minHeight: 87 }} />
             </div>
-            {/* Bottom wide */}
+            <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden" style={{ minHeight: 87 }}>
+              <img src={BENTO_PHOTOS[2].src} alt={BENTO_PHOTOS[2].alt} className="w-full h-full object-cover" style={{ minHeight: 87 }} />
+            </div>
             <div className="col-span-3 rounded-2xl overflow-hidden" style={{ minHeight: 100 }}>
-              <img
-                src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=700"
-                alt="Productos frescos"
-                className="w-full h-full object-cover"
-                style={{ minHeight: 100 }}
-              />
+              <img src={BENTO_PHOTOS[3].src} alt={BENTO_PHOTOS[3].alt} className="w-full h-full object-cover" style={{ minHeight: 100 }} />
             </div>
           </div>
         </div>
@@ -338,7 +306,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
             <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
               Puerto Ayora, Santa Cruz, Galápagos
             </p>
-            {/* Map embed placeholder */}
             <a
               href="https://maps.app.goo.gl/uM7jPvwGxzyUeeJYA"
               target="_blank"
@@ -375,7 +342,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
             style={{ background: '#fff', boxShadow: '0 -4px 40px rgba(0,0,0,0.25)' }}
             onClick={e => e.stopPropagation()}
           >
-            {/* Header */}
             <div className="flex items-center justify-between px-5 pt-5 pb-3" style={{ background: '#E67E22' }}>
               <p className="font-black text-white text-base">Instalar en iPhone</p>
               <button
@@ -386,7 +352,6 @@ export default function LandingPage({ onInstall, canInstall, onContinueWeb }: Pr
                 <X size={15} className="text-white" />
               </button>
             </div>
-            {/* Steps */}
             <div className="px-5 py-5 space-y-4">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-black text-white text-sm" style={{ background: '#E67E22' }}>1</div>
